@@ -1,7 +1,9 @@
-"""BST, all left nodes have KEY smaller than the right nodes."""
+from graphviz import Digraph
+
 class BST(object):
 	"""A node is defined as a dictionary of
-	{'val': val, 'P': index of parent, 'L': index of left child, 'R': index of right child}"""
+	{'val': val, 'P': index of parent, 'L': index of left child, 'R': index of right child}
+	"""
 	def __init__(self, tree=[]):
 		self.tree = tree
 
@@ -14,6 +16,7 @@ class BST(object):
 			self.createNode(val)
 		else:
 			self._insertNode(0, val)
+		self.TreeDepth()
 
 	def _insertNode(self, currentNodeidx, val):
 		"""Insert a non root node."""
@@ -177,78 +180,32 @@ class BST(object):
 			for key in currentNode:
 				currentNode[key] = None
 
-	def TreeDepth(self):
-		for index in range(len(self.tree)):
-			self.tree[index]['D'] = self._nodeDepth(index)
+	def printTree(self):
+		dot = Digraph(comment='Binary search tree')
+		dot.attr(ordering='out')
+		for ind in range(len(self.tree)):
+			if self.tree[ind]['P'] == None and self.tree[ind]['val'] != None:
+				rootidx = ind
+		self._print(rootidx, dot)
+		# print(dot.source)
+		dot.render('bst.gv', view=True)
 
-	def updateDepth(self, currentNodeidx):
-		newDepth = self._nodeDepth(currentNodeidx)
-		self.tree[currentNodeidx]['D'] = newDepth
-
-	def _nodeDepth(self, currentNodeidx):
-		"""Compute the node depth for a single node."""
+	def _print(self, currentNodeidx, dot):
+		"""generate nodes and edges for graphviz. dot is the graphviz object."""
 		currentNode = self.tree[currentNodeidx]
-		if (currentNode['L'] == None) and (currentNode['R'] == None):
-			depth = 0
-		else:
-			leftChild = currentNode['L']
-			rightChild = currentNode['R']
-			if (leftChild != None) and (rightChild != None):
-				leftDepth = self._nodeDepth(leftChild)
-				rightDepth = self._nodeDepth(rightChild)
-				depth = max([leftDepth, rightDepth]) + 1
-			elif (leftChild == None) and (rightChild != None):
-				depth = self._nodeDepth(rightChild) + 1
-			else:
-				depth = self._nodeDepth(leftChild) + 1
-		return depth
-
-	def leftRotate(self, currentNodeidx):
-		currentNode = self.tree[currentNodeidx]
+		if currentNode['P'] == None:
+			dot.node(str(currentNodeidx), str(currentNode['val']))
+		leftChildidx = currentNode['L']
 		rightChildidx = currentNode['R']
-		rightChild = self.tree[rightChildidx]
-		rightChild['P'] = currentNode['P']
-		if currentNode['P'] != None:
-			parent = self.tree[currentNode['P']]
-		if parent['L'] == currentNodeidx:
-			parent['L'] = rightChildidx
-		elif parent['R'] == currentNodeidx:
-			parent['R'] = rightChildidx
-		currentNode['P'] = rightChildidx
-		gLeftChildidx = rightChild['L']
-		if gLeftChildidx != None:
-			gLeftChild = self.tree[gLeftChildidx]
-			gLeftChild['P'] = currentNodeidx
-		currentNode['R'] = gLeftChildidx
-		rightChild['L'] = currentNodeidx
-		self.updateDepth(currentNodeidx)
-		self.updateDepth(rightChildidx)
-
-	def rightRotate(self):
-		pass
-
-	def balance(self, index):
-		pass
+		if leftChildidx != None:
+			leftChild = self.tree[leftChildidx]
+			dot.node(str(leftChildidx), str(leftChild['val']))
+			dot.edge(str(currentNodeidx), str(leftChildidx))
+			self._print(leftChildidx, dot)
+		if rightChildidx != None:
+			rightChild = self.tree[rightChildidx]
+			dot.node(str(rightChildidx), str(rightChild['val']))
+			dot.edge(str(currentNodeidx), str(rightChildidx))
+			self._print(rightChildidx, dot)
 
 
-# def f(i):
-# 	if i ==  0:
-# 		x = True
-# 	else:
-# 		x = f(i-1)
-# 	return x
-
-# f(1)
-
-def main():
-	bst = BST()
-	L1 = [17,5,25,2,11,9,16,7,35,29,38,28,32,8]
-	L2 = [17,25,20,35]
-	for l in L2:
-		bst.insert(l)
-	bst.TreeDepth()
-	bst.leftRotate(0)
-	print(bst.tree)
-
-if __name__ == '__main__':
-	main()
