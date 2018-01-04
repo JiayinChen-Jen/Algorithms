@@ -40,51 +40,21 @@ class AVL(BST):
 				depth = self._nodeDepth(leftChild) + 1
 		return depth
 
-	def leftRotate(self, currentNodeidx):
-		"""Left rotation."""
+	def AVL_leftRotate(self, currentNodeidx):
 		currentNode = self.tree[currentNodeidx]
 		rightChildidx = currentNode['R']
-		rightChild = self.tree[rightChildidx]
-		rightChild['P'] = currentNode['P']
 		parentidx = currentNode['P']
-		if parentidx != None:
-			parent = self.tree[parentidx]
-			if parent['L'] == currentNodeidx:
-				parent['L'] = rightChildidx
-			elif parent['R'] == currentNodeidx:
-				parent['R'] = rightChildidx
-		currentNode['P'] = rightChildidx
-		gLeftChildidx = rightChild['L']
-		if gLeftChildidx != None:
-			gLeftChild = self.tree[gLeftChildidx]
-			gLeftChild['P'] = currentNodeidx
-		currentNode['R'] = gLeftChildidx
-		rightChild['L'] = currentNodeidx
+		self.leftRotate(currentNodeidx)
 		self.updateDepth(currentNodeidx)
 		self.updateDepth(rightChildidx)
 		if parentidx != None:
 			self.updateDepth(parentidx)
 
-	def rightRotate(self, currentNodeidx):
-		"""right rotation."""
+	def AVL_rightRotate(self, currentNodeidx):
 		currentNode = self.tree[currentNodeidx]
 		leftChildidx = currentNode['L']
-		leftChild = self.tree[leftChildidx]
-		leftChild['P'] = currentNode['P']
 		parentidx = currentNode['P']
-		if parentidx != None:
-			parent = self.tree[parentidx]
-			if parent['L'] == currentNodeidx:
-				parent['L'] = leftChildidx
-			elif parent['R'] == currentNodeidx:
-				parent['R'] = leftChildidx
-		currentNode['P'] = leftChildidx
-		gRightChildidx = leftChild['R']
-		if gRightChildidx != None:
-			gRightChild = self.tree[gRightChildidx]
-			gRightChild['P'] = currentNodeidx
-		currentNode['L'] = gRightChildidx
-		leftChild['R'] = currentNodeidx
+		self.rightRotate(currentNodeidx)
 		self.updateDepth(currentNodeidx)
 		self.updateDepth(leftChildidx)
 		if parentidx != None:
@@ -93,7 +63,7 @@ class AVL(BST):
 	def balance(self, currentNodeidx):
 		"""Balance and update tree."""
 		while currentNodeidx != None:
-			# self.TreeDepth()
+			self.TreeDepth()
 			currentNode = self.tree[currentNodeidx]
 			leftChildidx = currentNode['L']
 			rightChildidx = currentNode['R']

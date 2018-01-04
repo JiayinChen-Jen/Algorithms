@@ -16,7 +16,6 @@ class BST(object):
 			self.createNode(val)
 		else:
 			self._insertNode(0, val)
-		self.TreeDepth()
 
 	def _insertNode(self, currentNodeidx, val):
 		"""Insert a non root node."""
@@ -180,6 +179,50 @@ class BST(object):
 			for key in currentNode:
 				currentNode[key] = None
 
+	def leftRotate(self, currentNodeidx):
+		"""Left rotation."""
+		currentNode = self.tree[currentNodeidx]
+		rightChildidx = currentNode['R']
+		rightChild = self.tree[rightChildidx]
+		rightChild['P'] = currentNode['P']
+		parentidx = currentNode['P']
+		if parentidx != None:
+			parent = self.tree[parentidx]
+			if parent['L'] == currentNodeidx:
+				parent['L'] = rightChildidx
+			elif parent['R'] == currentNodeidx:
+				parent['R'] = rightChildidx
+		currentNode['P'] = rightChildidx
+		gLeftChildidx = rightChild['L']
+		if gLeftChildidx != None:
+			gLeftChild = self.tree[gLeftChildidx]
+			gLeftChild['P'] = currentNodeidx
+		currentNode['R'] = gLeftChildidx
+		rightChild['L'] = currentNodeidx
+
+
+	def rightRotate(self, currentNodeidx):
+		"""right rotation."""
+		currentNode = self.tree[currentNodeidx]
+		leftChildidx = currentNode['L']
+		leftChild = self.tree[leftChildidx]
+		leftChild['P'] = currentNode['P']
+		parentidx = currentNode['P']
+		if parentidx != None:
+			parent = self.tree[parentidx]
+			if parent['L'] == currentNodeidx:
+				parent['L'] = leftChildidx
+			elif parent['R'] == currentNodeidx:
+				parent['R'] = leftChildidx
+		currentNode['P'] = leftChildidx
+		gRightChildidx = leftChild['R']
+		if gRightChildidx != None:
+			gRightChild = self.tree[gRightChildidx]
+			gRightChild['P'] = currentNodeidx
+		currentNode['L'] = gRightChildidx
+		leftChild['R'] = currentNodeidx
+
+
 	def printTree(self):
 		dot = Digraph(comment='Binary search tree')
 		dot.attr(ordering='out')
@@ -193,6 +236,7 @@ class BST(object):
 	def _print(self, currentNodeidx, dot):
 		"""generate nodes and edges for graphviz. dot is the graphviz object."""
 		currentNode = self.tree[currentNodeidx]
+		dot.node_attr.update(shape='circle')
 		if currentNode['P'] == None:
 			dot.node(str(currentNodeidx), str(currentNode['val']))
 		leftChildidx = currentNode['L']
