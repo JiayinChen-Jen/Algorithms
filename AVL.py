@@ -5,6 +5,9 @@ class AVL(BST):
 	def __init__(self):
 		super(AVL, self).__init__()
 
+	def createNode(self, val):
+		self.tree.append({'val': val, 'P': None ,'L': None, 'R': None, 'D': None})
+
 	def AVL_insert(self, val):
 		self.insert(val)
 		self.balance(-1)
@@ -148,12 +151,12 @@ def main():
 	L1 = [17,5,25,2,11,9,16,7,35,29,38,28,32,8]
 	L2 = [17,25,20,35]
 	L3 = [41, 20, 65, 11, 29, 50, 26]
-	for l in L3:
-		avl.insert(l)
+	for l in L1:
+		avl.AVL_insert(l)
 	avl.AVL_insert(23)
 	avl.AVL_insert(55)
 	avl.printTree()
-	avl.delet(41)
+	# avl.delet(41)
 	avl.printTree()
 	print(avl.tree)
 

@@ -8,7 +8,7 @@ class BST(object):
 		self.tree = tree
 
 	def createNode(self, val):
-		self.tree.append({'val': val, 'P': None ,'L': None, 'R': None, 'D': None})
+		self.tree.append({'val': val, 'P': None ,'L': None, 'R': None})
 
 	def insert(self, val):
 		"""Wrapper for inserNode(). Handle root."""
