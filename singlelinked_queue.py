@@ -1,32 +1,41 @@
-"""Single linked list for stack implementation."""
+"""Single linked list for queue implementation."""
 from graphviz import Graph
+
 class Node(object):
 	"""single linked node"""
 	def __init__(self, key):
 		self.key = key
 		self.next = None
 
-class singlelinked_stack(object):
+class singlelinked_queue(object):
 	def __init__(self):
 		self.sentinel = Node(None)
+		# sentinel is the head
 		self.sentinel.next = self.sentinel
+		self.tail = None
 
 	def stack_empty(self):
 		return self.sentinel.next == self.sentinel
 
-	def push(self, key):
+	def enqueue(self, key):
 		node = Node(key)
-		node.next = self.sentinel.next
-		self.sentinel.next = node
-
-	def pop(self):
 		if self.stack_empty():
-			raise ValueError('stack underflow')
+			node.next = self.sentinel
+			self.sentinel.next = node
+			self.tail = node
+		else:
+			node.next = self.sentinel
+			self.tail.next = node
+			self.tail = node
+
+	def dequeue(self):
+		if self.stack_empty():
+			raise ValueError('queue is empty')
 		x = self.sentinel.next
 		self.sentinel.next = x.next
 		return x
 
-	def printStack(self): 
+	def printQueue(self): 
 		sl = Graph('singlylinked', node_attr={'shape':'record'})	
 		if self.stack_empty():
 			pass
@@ -36,6 +45,7 @@ class singlelinked_stack(object):
 
 	def _draw(self, node, ind, sl):
 		if node != self.sentinel:
+			print (node.key)
 			key = str(node.key)
 			sl.node(str(ind), key)
 			nextNode = node.next
@@ -49,14 +59,14 @@ class singlelinked_stack(object):
 
 
 
-
 def main():
-	st = singlelinked_stack()
-	L = [1, 6, 7, 2, 3, 10, 11, 11, 11, 11]
+	st = singlelinked_queue()
+	L = [1, 2, 11, 11, 16, 18, 17, 7, 17]
 	for l in L:
-		st.push(l)
-	# st.pop()
-	st.printStack()
+		st.enqueue(l)
+	# print(st.tail.next)
+	st.dequeue()
+	st.printQueue()
 
 if __name__ == '__main__':
 	main()
