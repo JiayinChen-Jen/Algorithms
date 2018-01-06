@@ -44,8 +44,6 @@ class doublylinked_list(object):
 		dl = Graph('doublylinked', node_attr={'shape':'record'})	
 		if self.isEmpyty():
 			pass
-		elif self.sentinel.next == self.sentinel:
-			dl.node(str(self.sentinel.key), shape='circular')
 		else:
 			self._draw(self.sentinel.next, dl)
 		dl.render('doublylinked.gv', view=True)
