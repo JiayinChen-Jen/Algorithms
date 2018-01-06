@@ -19,14 +19,12 @@ class singlelinked_queue(object):
 
 	def enqueue(self, key):
 		node = Node(key)
+		node.next = self.sentinel
 		if self.stack_empty():
-			node.next = self.sentinel
 			self.sentinel.next = node
-			self.tail = node
 		else:
-			node.next = self.sentinel
 			self.tail.next = node
-			self.tail = node
+		self.tail = node
 
 	def dequeue(self):
 		if self.stack_empty():
@@ -45,17 +43,13 @@ class singlelinked_queue(object):
 
 	def _draw(self, node, ind, sl):
 		if node != self.sentinel:
-			print (node.key)
 			key = str(node.key)
 			sl.node(str(ind), key)
 			nextNode = node.next
-			if ind == 0:
-				ind += 1
-				self._draw(nextNode, ind, sl)
-			else:
+			if ind > 0:
 				sl.edge(str(ind-1), str(ind))
-				ind += 1
-				self._draw(nextNode, ind, sl)
+			ind += 1
+			self._draw(nextNode, ind, sl)
 
 
 

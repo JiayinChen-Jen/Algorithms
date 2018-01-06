@@ -39,13 +39,10 @@ class singlelinked_stack(object):
 			key = str(node.key)
 			sl.node(str(ind), key)
 			nextNode = node.next
-			if ind == 0:
-				ind += 1
-				self._draw(nextNode, ind, sl)
-			else:
+			if ind > 0:
 				sl.edge(str(ind-1), str(ind))
-				ind += 1
-				self._draw(nextNode, ind, sl)
+			ind += 1
+			self._draw(nextNode, ind, sl)
 
 
 
