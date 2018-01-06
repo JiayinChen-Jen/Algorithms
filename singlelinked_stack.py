@@ -31,28 +31,29 @@ class singlelinked_stack(object):
 		if self.stack_empty():
 			pass
 		else:
-			self._draw(self.sentinel.next, sl)
+			self._draw(self.sentinel.next, 0, sl)
 		sl.render('singlylinked.gv', view=True)
 
-	def _draw(self, node, sl):
-		if node!= self.sentinel:
+	def _draw(self, node, ind, sl):
+		if node != self.sentinel:
 			key = str(node.key)
-			sl.node(key)
+			sl.node(str(ind), key)
 			nextNode = node.next
-			if nextNode != self.sentinel:
-				nextKey = str(nextNode.key)
-				sl.node(nextKey)
-				sl.edge(key, nextKey)
-				grandNode = nextNode.next
-				self._draw(nextNode, sl)		
+			ind += 1
+			if ind == 0:
+				self._draw(nextNode, ind, sl)
+			else:
+				sl.edge(str(ind-1), str(ind))
+				self._draw(nextNode, ind, sl)
+
+
 
 def main():
 	st = singlelinked_stack()
-	L = [1, 6, 7, 2, 3]
+	L = [1, 6, 7, 2, 3, 10, 11, 11, 11, 11]
 	for l in L:
 		st.push(l)
-	st.pop()
-	st.pop()
+	# st.pop()
 	st.printStack()
 
 if __name__ == '__main__':
