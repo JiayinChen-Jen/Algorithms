@@ -6,14 +6,6 @@ class Node(object):
 		self.next = None
 		self.prev = None
 
-	def setKey(self, newkey):
-		self.key = newkey
-
-	def setNext(self, newnext):
-		self.next = newnext
-
-	def setPrevious(self, newprev):
-		self.prev = newprev
 
 class doublylinked_list(object):
 	def __init__(self):
