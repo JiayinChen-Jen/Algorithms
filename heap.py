@@ -28,11 +28,6 @@ def max_heapify(heap, key):
 		max_heapify(heap, largest_key)
 	return heap
 
-def extract_max(heap):
-	"""return largest key and remove."""
-	heap.pop(0)
-	return heap
-
 def min_heapify(heap, key):
 	"""Correct a SINGLE violation in the min heap."""
 	leftInd = get_leftChild(key)
@@ -62,6 +57,50 @@ def heapSort(array, name='max'):
 			min_heapify(heap, 0)
 	return sortedList
 
+def heap_maximum(heap):
+	return heap[0]
+
+def extract_maxMin(heap, name='max'):
+	if len(heap) < 1:
+		raise ValueError('heap underflow')
+	maxMin = heap[0]
+	heap[0] = heap[-1]
+	heap.pop(-1)
+	if name == 'max':
+		max_heapify(heap, 0)
+	else:
+		min_heapify(heap, 0)
+	return Max
+
+def increase_val(heap, key, val):
+	"""Increase the value of the element heap[key]"""
+	if val < heap[key]:
+		raise ValueError('new key is smaller than current key')
+	heap[key] = val
+	parentInd = get_parent(key)
+	while key > 0 and heap[parentInd] < heap[key]:
+		heap[parentInd], heap[key] = heap[key], heap[parentInd]
+		key = parentInd
+		parentInd = get_parent(key)
+	return heap
+
+def insert(heap, val):
+	"""Insert an element with value val"""
+	heap.append(-10e8)
+	heap = increase_val(heap, len(heap)-1, val)
+	return heap
+
+def delete(heap, key, name='max'):
+	if len(heap) < 1:
+		raise ValueError('heap underflow')
+	heap[key], heap[len(heap)-1] = heap[len(heap)-1], heap[key]
+	heap.pop(-1)
+	if name == 'max':
+		heap = max_heapify(heap, key)
+	else:
+		heap = min_heapify(heap, key)
+	return heap
+
 def heap_size(heap):
 	return len(heap)
 
@@ -82,12 +121,16 @@ def get_rightChild(key):
 	return int(key*2+2)
 
 
+
+
 """ Testing """
-# heap1 = [16, 4, 10, 14, 7, 9, 3, 2, 8 ,1]
+heap1 = [16, 4, 10, 14, 7, 9, 3, 2, 8 ,1]
 # heap2 = [4, 1, 3, 2, 16, 9, 10, 14, 8, 7]
 # heap3 = [1, 5, 4, 2, 7, 11, 13, 3, 4]
 # print(max_heapify(heap1, 1))
-# print(build_heap(heap2, 'max'))
+print(build_heap(heap1, 'max'))
+# print(increase_val(heap1, 2, 20))
+print(delete(heap1, 3))
 # array = rand.randint(100, size = 20).tolist()
 # print(heapSort(array, name='min'))
 # print(min_heapify(heap3, 1))
